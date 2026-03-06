@@ -8,6 +8,7 @@ import com.example.npci.model.NpciTransaction;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,7 @@ public class OutboxProcessor {
     public void processOutbox() {
         log.info("Processing outbox events...");
         
-        List<NpciOutbox> pendingEvents = npciOutboxRepository.findPendingEvents();
+        List<NpciOutbox> pendingEvents = npciOutboxRepository.findPendingEvents(PageRequest.of(0, 10));
         
         log.info("Found {} pending events", pendingEvents.size());
         
@@ -290,17 +291,20 @@ public class OutboxProcessor {
     }
 
     private void handleEventFailure(NpciOutbox event, String errorMessage) {
-        event.setRetryCount(event.getRetryCount() + 1);
+        int retryCount = event.getRetryCount() + 1;
+        event.setRetryCount(retryCount);
         event.setLastErrorMessage(errorMessage);
         
-        if (event.getRetryCount() >= MAX_RETRY_COUNT) {
+        if (retryCount >= MAX_RETRY_COUNT) {
             event.setStatus(NpciOutbox.EventStatus.FAILED);
             log.error("Event failed after {} retries: {} for transaction: {}", 
                     MAX_RETRY_COUNT, event.getEventType(), event.getTransactionId());
         } else {
+            long delaySeconds = Math.min(60, (long) Math.pow(2, retryCount));
+            event.setNextRetryAt(LocalDateTime.now().plusSeconds(delaySeconds));
             event.setStatus(NpciOutbox.EventStatus.PENDING);
-            log.warn("Event failed, will retry (attempt {}/{}): {} for transaction: {}", 
-                    event.getRetryCount(), MAX_RETRY_COUNT, event.getEventType(), event.getTransactionId());
+            log.warn("Event failed, will retry (attempt {}/{}): {} after {} sec for transaction: {}",
+                    event.getRetryCount(), MAX_RETRY_COUNT, event.getEventType(),delaySeconds , event.getTransactionId());
         }
         
         npciOutboxRepository.save(event);

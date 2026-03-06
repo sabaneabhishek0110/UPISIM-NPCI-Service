@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Entity
 @Table(
-        name = "outbox",
+        name = "npci_outbox",
         indexes = {
                 @Index(name = "idx_outbox_status_created",
                         columnList = "status, created_at"),
@@ -31,7 +31,7 @@ import java.util.UUID;
 public class NpciOutbox {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "event_type", nullable = false)
@@ -49,6 +49,9 @@ public class NpciOutbox {
 
     @Column(name = "retry_count", nullable = false)
     private int retryCount;
+
+    @Column(name = "next_retry_at")
+    private LocalDateTime nextRetryAt;
 
     @Column(name = "last_error_message", columnDefinition = "TEXT")
     private String lastErrorMessage;
