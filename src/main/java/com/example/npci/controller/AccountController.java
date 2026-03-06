@@ -60,9 +60,11 @@ public class AccountController {
                     entity,
                     BalanceResponse.class
             );
+            System.out.println("Response checking the balance : "+response);
             return ResponseEntity.ok(response);
         }
         catch(Exception e){
+            System.out.println("Error while fetching the balance : "+e);
             return ResponseEntity.internalServerError().body(new BalanceResponse());
         }
     }

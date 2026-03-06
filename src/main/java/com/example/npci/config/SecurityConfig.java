@@ -33,6 +33,8 @@ public class SecurityConfig {
                                 "/internal/npci/psp/register-public-key",
                                 "/internal/npci/icici/register-public-key",
                                 "/internal/npci/hdfc/register-public-key",
+                                "/internal/npci/bank/register",
+                                "/internal/npci/bank/list",
                                 "/health")
                         .permitAll() // public endpoints
                         .anyRequest().authenticated() // protect all other endpoints

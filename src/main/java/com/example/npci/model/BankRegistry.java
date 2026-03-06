@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "bank_registry")
@@ -26,13 +25,15 @@ public class BankRegistry {
     private String ifscPrefix;        // ICICI, YESB, SBIN
 
     @Column(nullable = false)
-    private String debitEndpoint;     // http://localhost:8086/bank/debit
+    private String debitEndpoint;     // e.g., http://localhost:8086/api/bank/debit
 
     @Column(nullable = false)
-    private String creditEndpoint;    // http://localhost:8086/bank/credit
+    private String creditEndpoint;    // e.g., http://localhost:8086/api/bank/credit
 
     @Column(nullable = false)
-    private String balanceEndpoint;   // http://localhost:8086/bank/balance?vpa
+    private String balanceEndpoint;   // e.g., http://localhost:8086/api/bank/balance?vpa
+
+    private String reversalEndpoint;  // e.g., http://localhost:8086/api/bank/reversal
 
     @Column(nullable = false)
     private String status;            // ACTIVE / INACTIVE

@@ -11,9 +11,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CreditRequest {
     private String PayeeVpa;
+    private String PayerVpa;
     private Double amount;
-    private String upi_txn_id;
+    private String upiTxnId;
     private String rrn;
-    private String psp_txn_id;
-
+    private String pspTxnId;
 }

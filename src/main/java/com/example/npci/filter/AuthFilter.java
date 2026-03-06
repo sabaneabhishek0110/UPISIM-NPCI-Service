@@ -39,7 +39,8 @@ public class AuthFilter extends OncePerRequestFilter {
         if (path.startsWith("/health") ||
                 path.startsWith("/internal/npci/psp/register-public-key") ||
                 path.startsWith("/internal/npci/icici/register-public-key") ||
-                path.startsWith("/internal/npci/hdfc/register-public-key")){
+                path.startsWith("/internal/npci/hdfc/register-public-key") ||
+                path.startsWith("/internal/npci/bank/")) {
 
             filterChain.doFilter(wrappedRequest, response);
             System.out.println("Passed through filter : "+path);

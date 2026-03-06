@@ -11,10 +11,11 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DebitRequest {
     private String PayerVpa;
+    private String PayeeVpa;
     private Double amount;
     private String pin;
+    private String upiTxnId;
     private String rrn;
-    private String upi_txn_id;
-    private String psp_txn_id;
+    private String pspTxnId;
 }
 

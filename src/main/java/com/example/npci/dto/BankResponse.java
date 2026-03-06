@@ -9,11 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentRequest {
-    private String PayerVpa;
-    private String PayeeVpa;
-    private Double amount;
-    private String pin;
-    private String pspTxnId;
-    private String callbackUrl;
+public class BankResponse {
+    private String bankTxnId;
+    private String status;
+    private String message;
 }

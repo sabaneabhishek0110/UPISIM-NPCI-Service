@@ -22,6 +22,9 @@ public class PspRegistry {
     @Column(nullable = false,columnDefinition = "TEXT")
     private String public_key;
 
+    @Column(nullable = false)  // Nullable to allow adding to existing records
+    private String callbackUrl;
+
     @Column(nullable = false)
     private String status;
 

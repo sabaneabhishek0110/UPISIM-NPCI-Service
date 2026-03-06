@@ -42,8 +42,15 @@ public class NpciTransaction {
     private String payeePspCode;
 
     private String status;
+
     private String responseCode;
+
     private String failureReason;
+
+    @Column(nullable = false)
+    private Boolean callbackSent = false;
+
+    private String callbackUrl;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
